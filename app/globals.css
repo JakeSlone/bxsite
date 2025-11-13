@@ -76,12 +76,15 @@ body {
 .prose p {
   margin-top: 1.25em;
   margin-bottom: 1.25em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .prose a {
   color: #60a5fa;
   text-decoration: underline;
   text-underline-offset: 2px;
+  word-break: break-all;
 }
 
 .prose a:hover {
@@ -109,8 +112,11 @@ body {
   border-radius: 0.5rem;
   padding: 1em;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-top: 1.7142857em;
   margin-bottom: 1.7142857em;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .prose pre code {
@@ -165,6 +171,9 @@ body {
   margin-top: 2em;
   margin-bottom: 2em;
   border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .prose th {

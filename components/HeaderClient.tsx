@@ -31,7 +31,7 @@ export default function HeaderClient({ user }: HeaderClientProps) {
           </SignOutButton>
         </div>
       ) : (
-        <SignInButton className="text-xs text-sky-300 underline underline-offset-4">
+        <SignInButton className="self-start text-xs text-sky-300 underline underline-offset-4">
           sign in
         </SignInButton>
       )}

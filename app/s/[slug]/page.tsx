@@ -75,8 +75,8 @@ export default async function SitePage(props: SitePageProps) {
   }
   return (
     <main className="min-h-screen bg-slate-950 py-16 text-slate-50">
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 font-mono">
-        <div className="prose prose-invert max-w-none">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 font-mono overflow-x-hidden">
+        <div className="prose prose-invert max-w-none break-words overflow-x-hidden">
           <Markdown>{site.markdown}</Markdown>
         </div>
       </div>
