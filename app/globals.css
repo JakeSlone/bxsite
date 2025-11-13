@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.prose h1 {
+  font-size: 2.25em;
+  font-weight: 800;
+  margin-top: 0;
+  margin-bottom: 0.8888889em;
+  line-height: 1.1111111;
+}
+
+.prose h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.3333333;
+}
+
+.prose h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  line-height: 1.6;
+}
+
+.prose h4 {
+  font-size: 1.125em;
+  font-weight: 600;
+  margin-top: 1.5555556em;
+  margin-bottom: 0.4444444em;
+  line-height: 1.5555556;
+}
+
+.prose h5 {
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 1.6666667em;
+  margin-bottom: 0.3333333em;
+  line-height: 1.6666667;
+}
+
+.prose h6 {
+  font-size: 0.875em;
+  font-weight: 600;
+  margin-top: 1.7142857em;
+  margin-bottom: 0.2857143em;
+  line-height: 1.7142857;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose a {
+  color: #60a5fa;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: #93c5fd;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose code {
+  font-size: 0.875em;
+  font-weight: 600;
+  background-color: rgba(148, 163, 184, 0.1);
+  padding: 0.125em 0.25em;
+  border-radius: 0.25rem;
+}
+
+.prose pre {
+  background-color: rgba(15, 23, 42, 0.8);
+  border-radius: 0.5rem;
+  padding: 1em;
+  overflow-x: auto;
+  margin-top: 1.7142857em;
+  margin-bottom: 1.7142857em;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  font-weight: 400;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose blockquote {
+  border-left: 4px solid rgba(148, 163, 184, 0.3);
+  padding-left: 1em;
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  font-style: italic;
+}
+
+.prose hr {
+  border-color: rgba(148, 163, 184, 0.2);
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.prose img {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  max-width: 100%;
+  height: auto;
+}
+
+.prose table {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border-collapse: collapse;
+}
+
+.prose th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.5em;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.prose td {
+  padding: 0.5em;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.prose input[type="checkbox"] {
+  margin-right: 0.5em;
+  cursor: pointer;
+}
+
+.prose del {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.prose mark {
+  background-color: rgba(251, 191, 36, 0.3);
+  color: inherit;
+  padding: 0.125em 0.25em;
+  border-radius: 0.25rem;
+}
+
+.prose sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+  line-height: 0;
+}
+
+.prose sup {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.prose dl {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose dt {
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.prose dd {
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.prose .footnote-ref {
+  text-decoration: none;
+  color: #60a5fa;
+  font-weight: 600;
+  margin-left: 0.125em;
+}
+
+.prose .footnote-ref:hover {
+  color: #93c5fd;
+}
+
+.prose .footnotes {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  font-size: 0.875em;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.prose .footnotes ol {
+  margin-top: 1em;
+  padding-left: 1.5em;
+}
+
+.prose .footnotes li {
+  margin-bottom: 0.5em;
+}
+
+.prose .footnote-backref {
+  text-decoration: none;
+  color: #60a5fa;
+  margin-left: 0.5em;
+}
+
+.prose .footnote-backref:hover {
+  color: #93c5fd;
+}
