@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getSite, kv, type SiteRecord, setDomainMapping } from "@/lib/kv";
 import { verifyDomainDNS } from "@/lib/domain-verification";
+import { addVercelDomain } from "@/lib/vercel-domains";
 
 export async function POST(
   _request: NextRequest,
@@ -47,9 +48,26 @@ export async function POST(
         domainVerified: true,
       };
       await kv.set(`site:${site.slug}`, updatedRecord);
-      // Ensure domain mapping exists
       if (site.customDomain) {
         await setDomainMapping(site.customDomain, site.slug);
+
+        const projectId = process.env.VERCEL_PROJECT_ID;
+        const teamId = process.env.VERCEL_TEAM_ID;
+        if (projectId) {
+          const vercelResult = await addVercelDomain(
+            site.customDomain,
+            projectId,
+            teamId
+          );
+          if (
+            !vercelResult.success &&
+            vercelResult.error !== "VERCEL_TOKEN not configured"
+          ) {
+            console.warn(
+              `Failed to add domain to Vercel: ${vercelResult.error}`
+            );
+          }
+        }
       }
       return NextResponse.json({ verified: true });
     } else {
