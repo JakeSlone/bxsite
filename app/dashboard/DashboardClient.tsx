@@ -241,8 +241,7 @@ export default function DashboardClient({
               Add a TXT record to your DNS settings:
             </p>
             <div className="rounded bg-slate-800 p-2 font-mono text-slate-200 break-all">
-              <div className="text-sky-300">Name/Host:</div>
-              <div>{getVerificationTxtHost(customDomain.trim())}</div>
+              <div className="text-sky-300">Name/Host:</div>@
               <div className="text-sky-300 mt-2">Type:</div>
               <div>TXT</div>
               <div className="text-sky-300 mt-2">Value:</div>
@@ -271,10 +270,7 @@ export default function DashboardClient({
                 </p>
                 <div className="rounded bg-slate-800 p-2 font-mono text-slate-200 break-all text-xs">
                   <div className="text-slate-400">Name/Host:</div>
-                  <div>
-                    {customDomain.trim()}{" "}
-                    <span className="text-slate-500">(or @ or blank)</span>
-                  </div>
+                  <div>@</div>
                   <div className="text-slate-400 mt-2">Type:</div>
                   <div>ALIAS or ANAME</div>
                   <div className="text-slate-400 mt-2">Value:</div>
