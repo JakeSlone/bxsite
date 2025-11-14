@@ -1,7 +1,19 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { kv, getSite, listSitesByUser, type SiteRecord } from "@/lib/kv";
+import {
+  kv,
+  getSite,
+  listSitesByUser,
+  type SiteRecord,
+  getSiteByDomain,
+  setDomainMapping,
+  removeDomainMapping,
+} from "@/lib/kv";
+import {
+  generateVerificationToken,
+  validateDomainFormat,
+} from "@/lib/domain-verification";
 
 const SLUG_REGEX = /^[a-z0-9-]{3,30}$/;
 
@@ -35,12 +47,33 @@ export async function POST(req: Request) {
       .trim()
       .toLowerCase();
     const markdown = String(body?.markdown ?? "");
+    const customDomain = body?.customDomain
+      ? String(body.customDomain).trim().toLowerCase()
+      : null;
 
     if (!SLUG_REGEX.test(slug)) {
       return NextResponse.json(
         { error: "Invalid slug. Use a-z, 0-9, hyphens, 3-30 chars." },
         { status: 400 }
       );
+    }
+
+    if (customDomain) {
+      const domainValidation = validateDomainFormat(customDomain);
+      if (!domainValidation.valid) {
+        return NextResponse.json(
+          { error: domainValidation.error },
+          { status: 400 }
+        );
+      }
+
+      const existingSite = await getSiteByDomain(customDomain);
+      if (existingSite && existingSite.slug !== slug) {
+        return NextResponse.json(
+          { error: "This domain is already in use by another site." },
+          { status: 409 }
+        );
+      }
     }
 
     const rl = await rateLimitWrites(userId);
@@ -59,7 +92,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Check if this is a new site (not an update to an existing one)
     const isNewSite = !current;
     if (isNewSite) {
       const userSites = await listSitesByUser(userId);
@@ -74,17 +106,57 @@ export async function POST(req: Request) {
       }
     }
 
+    const oldDomain = current?.customDomain;
+    let domainVerificationToken = current?.domainVerificationToken;
+    let domainVerified = current?.domainVerified ?? false;
+
+    if (customDomain) {
+      if (oldDomain !== customDomain) {
+        domainVerificationToken = generateVerificationToken();
+        domainVerified = false;
+
+        if (oldDomain) {
+          await removeDomainMapping(oldDomain);
+        }
+
+        await setDomainMapping(customDomain, slug);
+      }
+    } else {
+      if (oldDomain) {
+        await removeDomainMapping(oldDomain);
+      }
+      domainVerificationToken = undefined;
+      domainVerified = false;
+    }
+
     const record: SiteRecord = {
       slug,
       markdown,
       ownerUserId: userId,
       updatedAt: Date.now(),
+      ...(customDomain
+        ? {
+            customDomain,
+            domainVerificationToken,
+            domainVerified,
+          }
+        : {
+            customDomain: undefined,
+            domainVerificationToken: undefined,
+            domainVerified: undefined,
+          }),
     };
     await kv.set(`site:${slug}`, record);
     await kv.sadd(`sites:byUser:${userId}`, slug);
     revalidatePath(`/s/${slug}`);
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({
+      ok: true,
+      ...(customDomain && {
+        domainVerificationToken,
+        domainVerified,
+      }),
+    });
   } catch (err) {
     return NextResponse.json({ error: "Unexpected error" }, { status: 500 });
   }

@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/lib/auth";
-import { getSite, kv } from "@/lib/kv";
+import { getSite, kv, removeDomainMapping } from "@/lib/kv";
 
 export async function GET(
   _request: NextRequest,
@@ -33,6 +33,9 @@ export async function GET(
       slug: site.slug,
       markdown: site.markdown,
       updatedAt: site.updatedAt,
+      customDomain: site.customDomain,
+      domainVerified: site.domainVerified,
+      domainVerificationToken: site.domainVerificationToken,
     });
   } catch {
     return NextResponse.json({ error: "Unexpected error" }, { status: 500 });
@@ -67,6 +70,10 @@ export async function DELETE(
       process.env.BXSITE_DEV_SKIP_AUTH !== "1"
     ) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    if (site.customDomain) {
+      await removeDomainMapping(site.customDomain);
     }
 
     await kv.del(`site:${normalized}`);

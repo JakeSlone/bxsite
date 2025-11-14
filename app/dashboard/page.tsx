@@ -24,11 +24,17 @@ export default async function DashboardPage(props: DashboardPageProps) {
   const mySlugs = userId ? await listSitesByUser(userId) : [];
   const selectedSlug = resolvedSearchParams?.slug;
   let initialMarkdown = "";
+  let initialCustomDomain: string | undefined;
+  let initialDomainVerified: boolean | undefined;
+  let initialDomainVerificationToken: string | undefined;
 
   if (selectedSlug && userId) {
     const site = await getSite(selectedSlug);
     if (site && site.ownerUserId === userId) {
       initialMarkdown = site.markdown;
+      initialCustomDomain = site.customDomain;
+      initialDomainVerified = site.domainVerified;
+      initialDomainVerificationToken = site.domainVerificationToken;
     }
   }
 
@@ -38,6 +44,9 @@ export default async function DashboardPage(props: DashboardPageProps) {
       initialSlug={selectedSlug}
       initialMarkdown={initialMarkdown}
       mySlugs={mySlugs}
+      initialCustomDomain={initialCustomDomain}
+      initialDomainVerified={initialDomainVerified}
+      initialDomainVerificationToken={initialDomainVerificationToken}
     />
   );
 }
