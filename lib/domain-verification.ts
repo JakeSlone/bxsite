@@ -121,7 +121,6 @@ export async function verifyDomainDNS(
     const expectedTxtValue = getVerificationTxtValue(token);
 
     let txtRecords: string[] = [];
-    let usedFallback = false;
 
     try {
       const { resolveTxt } = await import("dns/promises");
@@ -138,7 +137,6 @@ export async function verifyDomainDNS(
         let dohSucceeded = false;
         for (const provider of ["google", "cloudflare"] as const) {
           try {
-            usedFallback = true;
             txtRecords = await lookupTxtViaDoH(txtHost, provider);
             dohSucceeded = true;
             break;

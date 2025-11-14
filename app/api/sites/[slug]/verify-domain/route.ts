@@ -54,19 +54,7 @@ export async function POST(
         const projectId = process.env.VERCEL_PROJECT_ID;
         const teamId = process.env.VERCEL_TEAM_ID;
         if (projectId) {
-          const vercelResult = await addVercelDomain(
-            site.customDomain,
-            projectId,
-            teamId
-          );
-          if (
-            !vercelResult.success &&
-            vercelResult.error !== "VERCEL_TOKEN not configured"
-          ) {
-            console.warn(
-              `Failed to add domain to Vercel: ${vercelResult.error}`
-            );
-          }
+          await addVercelDomain(site.customDomain, projectId, teamId);
         }
       }
       return NextResponse.json({ verified: true });

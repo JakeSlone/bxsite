@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/lib/auth";
 import { getSite, kv, removeDomainMapping } from "@/lib/kv";
+import { removeVercelDomain } from "@/lib/vercel-domains";
 
 export async function GET(
   _request: NextRequest,
@@ -74,6 +75,12 @@ export async function DELETE(
 
     if (site.customDomain) {
       await removeDomainMapping(site.customDomain);
+
+      const projectId = process.env.VERCEL_PROJECT_ID;
+      const teamId = process.env.VERCEL_TEAM_ID;
+      if (projectId) {
+        await removeVercelDomain(site.customDomain, projectId, teamId);
+      }
     }
 
     await kv.del(`site:${normalized}`);
