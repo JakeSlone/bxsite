@@ -149,19 +149,19 @@ export async function verifyDomainDNS(
         if (!dohSucceeded) {
           return {
             verified: false,
-            error: `DNS lookup failed for ${txtHost}. Tried native DNS, Google DoH, and Cloudflare DoH. Last error: ${lastError.message}. Please verify the TXT record exists and try again in a few minutes.`,
+            error: `Domain ${domain} is not yet verified. Please ensure the TXT record is added and wait a few minutes for DNS propagation.`,
           };
         }
       } else {
         if (err.code === "ENOTFOUND" || err.code === "ENODATA") {
           return {
             verified: false,
-            error: `TXT record not found for ${txtHost}. Please add the DNS record and wait a few minutes for propagation.`,
+            error: `Domain ${domain} is not yet verified. Please add the TXT record and wait a few minutes for DNS propagation.`,
           };
         }
         return {
           verified: false,
-          error: `DNS lookup failed for ${txtHost}: ${err.message} (code: ${err.code})`,
+          error: `Domain ${domain} is not yet verified. Please check your DNS configuration and try again.`,
         };
       }
     }
@@ -169,7 +169,7 @@ export async function verifyDomainDNS(
     if (!txtRecords || txtRecords.length === 0) {
       return {
         verified: false,
-        error: `No TXT records found for ${txtHost}. Please verify the DNS record was added correctly.`,
+        error: `Domain ${domain} is not yet verified. Please verify the TXT record was added correctly.`,
       };
     }
 
@@ -186,18 +186,14 @@ export async function verifyDomainDNS(
       return { verified: true };
     }
 
-    const allRecordsList = txtRecords
-      .map((r, i) => `Record ${i + 1}: "${r.replace(/"/g, "")}"`)
-      .join("\n");
-
     return {
       verified: false,
-      error: `TXT record value not found. Expected to find: ${cleanedExpected}\n\nFound ${txtRecords.length} TXT record(s):\n${allRecordsList}\n\nPlease verify:\n1. The TXT record name is exactly: ${txtHost} (or @ or blank for root domain)\n2. The record type is TXT\n3. The record value is exactly: ${cleanedExpected}\n4. You've saved the record in your DNS provider\n5. Wait 5-10 minutes after adding the record`,
+      error: `Domain ${domain} is not yet verified. The TXT record value does not match. Please verify the record value is exactly: ${cleanedExpected}`,
     };
   } catch (err: any) {
     return {
       verified: false,
-      error: `Verification failed: ${err.message}`,
+      error: `Domain ${domain} is not yet verified. Please try again in a few minutes.`,
     };
   }
 }
