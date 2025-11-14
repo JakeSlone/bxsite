@@ -248,12 +248,6 @@ export default function DashboardClient({
               <div className="text-sky-300 mt-2">Value:</div>
               <div>{getVerificationTxtValue(domainVerificationToken)}</div>
             </div>
-            <p className="text-slate-400 text-xs mt-2">
-              Note: For the root domain, some DNS providers use the domain name
-              ({getVerificationTxtHost(customDomain.trim())}), others use @, and
-              some require it to be blank/empty. Check your DNS provider's
-              documentation.
-            </p>
             <div className="flex items-center gap-2 mt-3">
               <button
                 type="button"
@@ -267,12 +261,6 @@ export default function DashboardClient({
                 <span className="text-green-400 text-xs">✓ Verified</span>
               )}
             </div>
-            {!domainVerified && (
-              <p className="text-slate-400 text-xs">
-                After adding the TXT record, wait 5-10 minutes for DNS
-                propagation, then click Verify Domain.
-              </p>
-            )}
             {domainVerified && (
               <div className="mt-4 pt-4 border-t border-slate-700">
                 <p className="text-slate-300 font-semibold mb-2">
