@@ -30,7 +30,8 @@ async function HomeInner() {
           <ul className="list-disc space-y-2 pl-6 text-sm leading-relaxed text-slate-300">
             <li>create an account</li>
             <li>write your site content in markdown</li>
-            <li>choose your domain name</li>
+            <li>choose your subdomain name</li>
+            <li>add your own custom domain (optional)</li>
             <li>click deploy</li>
           </ul>
         </section>

@@ -221,7 +221,7 @@ export default function DashboardClient({
         />
         <p className="text-xs text-slate-400">
           Your site will be available at https://{trimmedSlug || "your-slug"}
-          .bxsite.com. The page title will be generated from this slug.
+          .bxsite.com.
         </p>
       </div>
       <div className="space-y-3">
@@ -328,7 +328,8 @@ export default function DashboardClient({
           className={`text-sm ${
             message.includes("Saved") ||
             message.includes("Loaded") ||
-            message.includes("Deleted")
+            message.includes("Deleted") ||
+            message.includes("Domain verified successfully")
               ? "text-sky-300"
               : "text-red-400"
           }`}
