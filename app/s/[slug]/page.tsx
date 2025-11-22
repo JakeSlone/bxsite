@@ -30,10 +30,15 @@ export async function generateMetadata(
   );
   const pageDescription = extractedDescription || `View ${slug} on bxsite`;
 
-  const baseUrl = process.env.NEXTAUTH_URL || "https://bxsite.com";
-  const siteUrl = baseUrl.includes("localhost")
-    ? `${baseUrl}/s/${slug}`
-    : `https://${slug}.bxsite.com`;
+  let siteUrl: string;
+  if (site.customDomain && site.domainVerified) {
+    siteUrl = `https://${site.customDomain}`;
+  } else {
+    const baseUrl = process.env.NEXTAUTH_URL || "https://bxsite.com";
+    siteUrl = baseUrl.includes("localhost")
+      ? `${baseUrl}/s/${slug}`
+      : `https://${slug}.bxsite.com`;
+  }
 
   return {
     title: pageTitle,

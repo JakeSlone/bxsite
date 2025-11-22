@@ -13,6 +13,9 @@ type DashboardWrapperProps = {
   initialSlug?: string;
   initialMarkdown?: string;
   mySlugs: string[];
+  initialCustomDomain?: string;
+  initialDomainVerified?: boolean;
+  initialDomainVerificationToken?: string;
 };
 
 export default function DashboardWrapper({
@@ -20,6 +23,9 @@ export default function DashboardWrapper({
   initialSlug,
   initialMarkdown,
   mySlugs,
+  initialCustomDomain,
+  initialDomainVerified,
+  initialDomainVerificationToken,
 }: DashboardWrapperProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -80,6 +86,9 @@ export default function DashboardWrapper({
           initialSlug={initialSlug}
           initialMarkdown={initialMarkdown}
           mySlugs={mySlugs}
+          initialCustomDomain={initialCustomDomain}
+          initialDomainVerified={initialDomainVerified}
+          initialDomainVerificationToken={initialDomainVerificationToken}
         />
       </div>
     </main>
